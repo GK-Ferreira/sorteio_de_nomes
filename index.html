@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Sistema de Sorteio</title>
+    <!-- <link rel="stylesheet" href="style.css"> -->
+    <style>
+        *{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: sans-serif;
+    color: #fff;
+}
+.main{
+    width: 100%;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background-color: #001f54;
+}
+.section{
+    background-color: #0a1128;
+    width: 600px;
+    height: 400px;
+    border-radius: 4px;
+    box-shadow:  4px 4px 5px ;
+    padding: 10px;
+}
+.title{
+    color: #fefcfb;
+    margin: 70px 0 30px 0;
+    text-align: center;
+}
+#nameForm{
+    background-color: red;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 40px;
+}
+#nameForm label{
+}
+    </style>
+</head>
+<body>
+    <main class="main">
+
+        <section class="section">
+
+        
+    
+    <h1 class="title">Sorteio de Nomes</h1>
+
+    <!-- Formulário para adicionar nomes -->
+    <form id="nameForm">
+        <label for="name">Nome:</label>
+        <input type="text" id="name" required>
+        <button type="button" onclick="addName()">Adicionar Nome</button>
+    </form>
+
+    <!-- Lista de nomes adicionados -->
+    <h2>Nomes Adicionados:</h2>
+    <ul id="nameList"></ul>
+
+    <!-- Botão para realizar o sorteio -->
+    <button id="drawButton" onclick="drawWinner()" disabled>Realizar Sorteio</button>
+
+    <!-- Resultado do sorteio -->
+    <h2>Resultado do Sorteio:</h2>
+    <p id="winner"></p>
+</section>
+
+</main>
+
+    <script>
+        const names = [];
+        const nameList = document.getElementById("nameList");
+        const drawButton = document.getElementById("drawButton");
+        const winnerDisplay = document.getElementById("winner");
+
+        function addName() {
+            const nameInput = document.getElementById("name");
+            const name = nameInput.value.trim();
+            if (name !== "") {
+                names.push(name);
+                nameList.innerHTML += `<li>${name}</li>`;
+                nameInput.value = "";
+                drawButton.disabled = false;
+            }
+        }
+
+        function drawWinner() {
+            const randomIndex = Math.floor(Math.random() * names.length);
+            console.log(Math.random())
+            const winner = names[randomIndex];
+            winnerDisplay.textContent = `O vencedor é: ${winner}`;
+        }
+    </script>
+</body>
+</html>
