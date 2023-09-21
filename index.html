@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA==" crossorigin="anonymous" referrerpolicy="no-referrer" /> 
     <title>Sistema de Sorteio</title>
     <!-- <link rel="stylesheet" href="style.css"> -->
     <style>
@@ -18,30 +19,158 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    background-color: #001f54;
+    background-color: #fff;
 }
 .section{
-    background-color: #0a1128;
-    width: 600px;
-    height: 400px;
+    background-color: #0c1f5c;
+    width: 650px;
+    height: 450px;
     border-radius: 4px;
     box-shadow:  4px 4px 5px ;
     padding: 10px;
+    position: relative;
 }
 .title{
     color: #fefcfb;
-    margin: 70px 0 30px 0;
+    margin: 40px 0 30px 0;
     text-align: center;
+    font-size:24px;
 }
 #nameForm{
-    background-color: red;
+    /* background-color: red; */
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 40px;
+    flex-direction: column;
+    width: 100%;
+    height: 250px;
 }
 #nameForm label{
+    font-size: 20px;
+    font-weight: bold;
 }
+#nameForm textarea{
+    border-radius: 4px;
+    margin: 10px 10px;
+    height: 25px;
+    border: 0;
+    color: #000;
+    font-size: 16px;
+    padding: 4px;
+    width: 90%;
+    height: 150px;
+    outline: none;
+    margin-bottom: 8px;
+}
+#nameForm textarea:hover{
+    background-color: rgba(255,255,255,0.9);
+}
+#nameForm button{
+    margin-left: 10px;
+    margin-top: 10px;
+    background-color: #1282a2;
+    width: 80%;
+    height: 40px;
+    font-size: 16px;
+    border: 0;
+    border-radius: 4px;
+    transition: .3s;
+    cursor: pointer;
+}
+#nameForm button:hover,
+#back_btn:hover,
+#back_btn:hover{
+    background-color: #fff;
+    color: #0c1f5c;
+    font-weight: bold;
+    transform: scale(1.1);
+    transition: transform .5s;
+}
+.fa-arrow-left{
+    color: #0c1f5c;
+}
+#back_btn{
+    background-color: #1282a2;
+    width: 80%;
+    height: 40px;
+    font-size: 18px;
+    border: 0;
+    border-radius: 4px;
+    transition: .3s;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+    position: absolute;
+    bottom: 20px;
+}
+
+.name_box{
+    list-style: none;
+    display: none;
+    padding: 8px ;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    margin:20px 0 ;
+
+}
+.name_box ul{
+   width: 90%;
+   list-style: none;
+   margin-top: 10px;
+   display: flex;
+   flex-wrap: wrap;
+   flex-direction: column;
+
+}
+.name_box ul li{
+    font-size: 18px;
+
+}
+.containerBtn{
+    margin-top: 40px;
+    display: none;
+    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+}
+#winner{
+    font-size: 20px;
+}
+#span{
+    font-weight: bold;
+    font-size: 22px;
+}
+.pop_up{
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%,-50%);
+    width: 600px;
+    height: 200px;
+    border-radius: 8px;
+    display: none;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+    background-color: #d1d1d1;
+    color: #0c1f5c;
+    font-weight: bold;
+    box-shadow: 2px 4px 3px #314a99;
+    font-size: 26px;
+}
+.fa-x{
+   position: absolute;
+   right: 20px;
+   top: 10px;
+   color: #0c1f5c;
+   font-size: 25px;
+   cursor: pointer;
+}
+
     </style>
 </head>
 <body>
@@ -55,48 +184,89 @@
 
     <!-- Formulário para adicionar nomes -->
     <form id="nameForm">
-        <label for="name">Nome:</label>
-        <input type="text" id="name" required>
+        <label for="name">Nomes:</label>
+        <!--"<input type="text" id="name" placeholder="Separe os Nomes por vírgula" required>-->
+        <textarea id="name" cols="30" rows="10"  placeholder="Separe os nomes por vírgula" required></textarea>
         <button type="button" onclick="addName()">Adicionar Nome</button>
     </form>
-
+    
     <!-- Lista de nomes adicionados -->
-    <h2>Nomes Adicionados:</h2>
-    <ul id="nameList"></ul>
-
+    <div class="name_box">
+        <h2>Nomes Adicionados:</h2>
+        <ul id="nameList"></ul>
+    </div>
+    
     <!-- Botão para realizar o sorteio -->
-    <button id="drawButton" onclick="drawWinner()" disabled>Realizar Sorteio</button>
+    <div class="containerBtn">
+        <h2>Resultado do Sorteio:</h2>
+        <p id="winner">O vencedor do Sorteio é: <span id="span"></span></p>
+        <button id="back_btn" type="button" onclick="back()"><i class="fa-solid fa-arrow-left"></i>voltar</button>
+  </div>
 
-    <!-- Resultado do sorteio -->
-    <h2>Resultado do Sorteio:</h2>
-    <p id="winner"></p>
 </section>
+
+<div class="pop_up">
+    Adicione nomes para sortear!
+    <i class="fa-solid fa-x"></i>
+</div>
 
 </main>
 
     <script>
-        const names = [];
-        const nameList = document.getElementById("nameList");
-        const drawButton = document.getElementById("drawButton");
-        const winnerDisplay = document.getElementById("winner");
+        let names = [];
+        const nameList = document.getElementById("nameList"); //array de nomes
+        const winnerDisplay = document.getElementById("span");
+        const container_btn = document.querySelector(".containerBtn");
+        const name_form = document.querySelector("#nameForm");
+        
+        
+        let popup = document.querySelector(".pop_up"); 
+        let X = document.querySelector(".fa-x");
 
+        X.addEventListener("click",() =>{
+        popup.style.display = "none" ;
+        })
+        
         function addName() {
-            const nameInput = document.getElementById("name");
+            const nameInput = document.getElementById("name");// input que recebe os nomes
             const name = nameInput.value.trim();
             if (name !== "") {
-                names.push(name);
-                nameList.innerHTML += `<li>${name}</li>`;
+                const nomesArray = name.split(',');
+                names = nomesArray;
+                nameList.innerHTML = "";
+                nomesArray.forEach(nome => {
+                    if (nome.trim() !== "") {
+                        const listItem = document.createElement("li");
+                        listItem.textContent = nome.trim();
+                        nameList.appendChild(listItem);
+                    }
+                });
+    
+                // Limpa o input
                 nameInput.value = "";
-                drawButton.disabled = false;
+                container_btn.style.display = "flex";
+                name_form.style.display = "none";
+
+                let nameListarray = nameList.innerText;
+                drawWinner();
+            }
+            else{
+
+                popup.style.display = "flex";
             }
         }
 
         function drawWinner() {
             const randomIndex = Math.floor(Math.random() * names.length);
-            console.log(Math.random())
+            console.log(names.length);
             const winner = names[randomIndex];
-            winnerDisplay.textContent = `O vencedor é: ${winner}`;
+            winnerDisplay.textContent = `${winner}`;
         }
+        
+        function back(){
+            location.reload();
+        }
+
     </script>
 </body>
 </html>
